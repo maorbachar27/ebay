@@ -63,6 +63,8 @@ export class AppComponent {
 
         const groupByCount = this.sortGroups(_.groupBy(results, "count"));
         const rankingGroups = this.rankWords(groupByCount);
+        console.log(results);
+        console.log(rankingGroups);
         this.ranking = rankingGroups;
       } else {
         this.notFound = true;
@@ -110,8 +112,9 @@ export class AppComponent {
           }
 
           rank--;
-          return acc;
         }
+
+        return acc;
       }, {});
   }
 
