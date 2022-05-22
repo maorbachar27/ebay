@@ -16,9 +16,10 @@ import { KeyValue } from "@angular/common";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-  title = "ebay";
   @ViewChild("input", { static: true }) input: ElementRef;
   searchFormControl = new FormControl("", []);
+  title = "ebay";
+
   ranking = {};
   loading: boolean = false;
   notFound: boolean = false;
@@ -31,7 +32,7 @@ export class AppComponent {
     fromEvent(this.input.nativeElement, "keyup")
       .pipe(
         filter(Boolean),
-        debounceTime(1000),
+        debounceTime(500),
         distinctUntilChanged(),
         tap(async () => {
           this.loading = true;
@@ -45,13 +46,14 @@ export class AppComponent {
   }
 
   async getWikipediaTopics(text: string) {
-    var url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=${text}&format=json&origin=*`;
+    const url = `https://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exintro=&titles=${text}&format=json&origin=*`;
 
     return this.httpService.request(url, "get", text);
   }
 
   init(data) {
     this.notFound = false;
+
     if (data.query && data.query.pages) {
       const [res] = Object.entries(data.query.pages);
       const extract = res[1]["extract"];
@@ -65,6 +67,7 @@ export class AppComponent {
       } else {
         this.notFound = true;
       }
+
       this.loading = false;
     }
   }
@@ -79,16 +82,17 @@ export class AppComponent {
       return acc;
     }, {});
   }
+
   countWords(str: string) {
     const toLowerCase = str.toLowerCase();
     const strippedHtml = toLowerCase.replace(/<[^>]+>/g, "");
-    var textArr = strippedHtml.split(" ");
-    var arr = [...new Set(strippedHtml.split(" "))];
+    const words = strippedHtml.split(" ");
+    const uniqueWords = [...new Set(strippedHtml.split(" "))];
 
     const results: { word: string; count: number }[] = [];
 
-    arr.forEach((v) =>
-      results.push({ word: v, count: textArr.filter((c) => c == v).length })
+    uniqueWords.forEach((v) =>
+      results.push({ word: v, count: words.filter((c) => c == v).length })
     );
 
     return results;
@@ -96,6 +100,7 @@ export class AppComponent {
 
   rankWords(groups) {
     let rank = 5;
+
     return Object.keys(groups)
       .reverse()
       .reduce((acc, groupInd) => {
@@ -103,6 +108,7 @@ export class AppComponent {
           if (!acc[rank]) {
             acc[rank] = groups[groupInd];
           }
+
           rank--;
           return acc;
         }
