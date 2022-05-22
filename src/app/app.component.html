@@ -18,14 +18,11 @@
       <span>No data found :(</span>
     </ng-container>
     <ng-template #content>
-      <div
-        class="rank__group"
-        *ngFor="let words of ranking | keyvalue: reverseKeyOrder"
-      >
-        <div class="rank__detail" *ngFor="let val of words.value">
+      <div class="rank__group" *ngFor="let key of getKeys(ranking)">
+        <div class="rank__detail" *ngFor="let val of ranking[key]">
           <div class="word-ranking__details">{{ val.word | titlecase }}</div>
           <div class="num-ranking__details">
-            <ng-container *ngFor="let star of ' '.repeat(words.key).split('')"
+            <ng-container *ngFor="let star of ' '.repeat(key).split('')"
               >*</ng-container
             >
           </div>

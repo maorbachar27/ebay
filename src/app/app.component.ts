@@ -63,7 +63,6 @@ export class AppComponent {
 
         const groupByCount = this.sortGroups(_.groupBy(results, "count"));
         const rankingGroups = this.rankWords(groupByCount);
-
         this.ranking = rankingGroups;
       } else {
         this.notFound = true;
@@ -117,12 +116,9 @@ export class AppComponent {
       }, {});
   }
 
-  reverseKeyOrder = (
-    a: KeyValue<number, string>,
-    b: KeyValue<number, string>
-  ): number => {
-    return a.key > b.key ? -1 : b.key > a.key ? 1 : 0;
-  };
+  getKeys(val) {
+    return Object.keys(val).reverse();
+  }
 
   ngOnDestroy(): void {}
 }
