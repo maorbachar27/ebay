@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="search">
+    <mat-form-field>
+      <input
+        matInput
+        type="search"
+        #input
+        placeholder="search here"
+        class="search__input"
+        [formControl]="searchFormControl"
+      />
+    </mat-form-field>
+    <img class="loading" src="assets/Spinner-1s-200px.svg" *ngIf="loading" />
+  </div>
+
+  <div class="rank__container">
+    <ng-container *ngIf="notFound; else content">
+      <span>No data found :(</span>
+    </ng-container>
+    <ng-template #content>
+      <div
+        class="rank__group"
+        *ngFor="let words of ranking | keyvalue: reverseKeyOrder"
+      >
+        <div class="rank__detail" *ngFor="let val of words.value">
+          <div class="word-ranking__details">{{ val.word | titlecase }}</div>
+          <div class="num-ranking__details">
+            <ng-container *ngFor="let star of ' '.repeat(words.key).split('')"
+              >*</ng-container
+            >
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
